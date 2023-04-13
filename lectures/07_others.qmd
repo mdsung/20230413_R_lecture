@@ -1,0 +1,10 @@
+---
+title: "Data Science in Healthcare Field with R"
+subtitle: 07 Others
+author: "세브란스병원 호흡기내과 성민동"
+date: 2023-04-13
+# format: revealjs
+---
+# Statistics
+
+# Visualization

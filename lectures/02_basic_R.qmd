@@ -1,0 +1,56 @@
+---
+title: "Data Science in Healthcare Field with R"
+subtitle: 02 basic R
+author: "세브란스병원 호흡기내과 성민동"
+date: 2023-04-13
+# format: revealjs
+---
+
+# The basics of R
+- `install.packages('')`: install library - ''가 반드시 필요합니다. 
+- `library()`: load library
+- `function()`
+- `""`(double quatation), `''`(quatation), ``` `` ```(backtick)
+- `<-` is equivalent to `=`
+```{r}
+a <- 1
+b = 2
+a
+b
+```
+- `::`: packeage - function relation
+- `%>%` or `|>` (a.k.a pipe) 
+  - `x %>% f(y)` is equivalent to `f(x, y)` 
+  - windows: <kbd>ctrl + shift + M </kbd>
+  - mac: <kbd>command + shift + M </kbd>
+- data types
+  - numeric: 1, 2, 3, 4, 5
+  - string: "1", "2", "3", "4", "5"
+  - factor
+  - date / datetime
+  - vector (array): using `[]` to approach the index 
+  ```{r}
+vector_data <- c(1, 2, 3)
+vector_data
+  ```
+  - list: using `[[]]` to approach the index 
+  ```{r}
+list_data <- list("Red", "Green", c(21, 32, 11), TRUE, 51.23)
+list_data
+  ```
+  - `dataframe` or `tibble`: using `$` to approach the column
+  ```{r}
+df <- tidyr::tibble(num = c(1, 2, 3), str = c("a", "b", "c"))
+df
+df$num
+  ```
+
+
+## Tip) Create Raw data with Excel
+1. 머리글을 두 줄 이상을 만들지 마세요
+1. 열이름이나 데이터 내부에는 최대한 한글을 피해 주세요
+1. 성별과 같은 범주형 변수는 0, 1이 아니라 M, F처럼 문자로 표시해주세요
+1. 열 이름 안에 결괏값의 단위를 적지 마세요
+1. 하나의 시트에는 하나의 표만 담아 주세요
+<p style="text-align: right;"> R 통계의 정석, 김종엽</p>
+

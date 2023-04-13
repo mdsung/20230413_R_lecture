@@ -1,0 +1,92 @@
+---
+title: "Data Science in Healthcare Field with R"
+subtitle: 04 Load Data
+author: "세브란스병원 호흡기내과 성민동"
+date: 2023-04-13
+# format: revealjs
+---
+## Tidyverse
+```{r}
+#| label: setup
+library(tidyverse)
+library(here)
+```
+
+## Read data
+### Read CSV file
+```{r}
+#| eval: false
+readr::read_csv() # or read_csv()
+```
+
+    - 처음 1000개의 열로 데이터의 형태를 유추해서 추출한다. 
+    - 따라서, 에러가 나는 경우는 column type을 정해줘야 한다. 
+    - `read.csv()`와 비슷하나 훨씬 빠르고, 일정한 output을 제공한다.
+
+```{r}
+patients <- read_csv(here("data/raw/tutorial_patients.csv"))
+patients
+```
+
+```{r}
+patients <- read_csv(here("data/raw/tutorial_patients.csv"),
+    col_types = cols(dod = col_date(format = "%Y.%m.%d"))
+)
+patients
+```
+
+### Tip) csv 문서가 깨지는 경우
+1. UTF-8로 다시 저장 - excel에서 새이름으로 저장 
+
+```{r echo = FALSE, message=FALSE, out.width='50%'}
+knitr::include_graphics(here("lectures/images/excel_save_as.png"))
+```
+
+2. 한글이 포함된 문서 읽을 때 Error가 나는 경우 
+  * 기존: UTF-8
+  * 변경: CP949 or EUC-KR
+
+```{r eval=FALSE, error=TRUE, message=FALSE, warning=TRUE}
+patients <- read_csv(file = here("data/raw/tutorial_patients_CP949.csv"))
+patients
+```
+
+```{r}
+patients <- read_csv(file = here("data/raw/tutorial_patients_CP949.csv"), locale = locale(encoding = "EUC-KR"))
+patients
+```
+
+
+### Read Excel File
+  * `readxl::excel_sheets()`: 엑셀 파일에 포함된 spreadsheet의 종류 확인
+  * `readxl::read_excel()`: 엑셀파일을 읽을 때 
+
+
+```{r}
+library(readxl)
+excel_sheets(here("data/raw/tutorial_patients.xlsx"))
+read_excel(here("data/raw/tutorial_patients.xlsx"))
+```
+
+## c.f. Read files
+```{r}
+library(rio)
+import(here("data/raw/tutorial_patients.csv"))
+import(here("data/raw/tutorial_patients.xlsx"))
+```
+
+## Viewing data
+- `View()` for Rstudio
+```{r}
+View(patients)
+```
+- `head()` or `tail()`
+```{r}
+head(patients)
+tail(patients)
+```
+- `str()` or `glimpse()` : structure
+```{r}
+str(patients)
+glimpse(patients)
+```

@@ -1,0 +1,209 @@
+---
+title: "Data Science in Healthcare Field with R"
+subtitle: 06 Create Table 1
+author: "세브란스병원 호흡기내과 성민동"
+date: 2023-04-13
+# format: revealjs
+---
+# Create Table 1 (demograhphic table)
+- `moonBook::mytable()`
+- `tableone::CreateTableOne()`
+- `gtsummary::tbl_summary()`
+
+```{r}
+#| label: setup
+#| message: false
+#| error: false
+library(tidyverse)
+library(here)
+data <- read_csv(here("data/raw/tutorial_ipa.csv"))
+data
+result <- data %>%
+    select(-PatientID) %>%
+    mutate(across(c(-serum_AGT, -BALF_AGT, -BDG), factor))
+result
+```
+## moonbook::mytable()
+- 카톨릭대학교 심장내과 문건웅 교수님께서 만든 패키지
+### All data summarize
+```{r}
+library(moonBook)
+mytable(result)
+```
+### Group summarize
+```{r}
+mytable(IPA ~ ., result)
+```
+### Document
+```
+[Arguments]
+x	
+An object of class "formula". Left side of ~ must contain the name of one grouping variable or two grouping variables in an additive way(e.g. sex+group~), and the right side of ~ must have variables in an additive way.
+
+data	
+A data.frame contains data for analysis
+
+use.labels	
+Logical. Whether or not use labels.
+
+use.column.label	
+Logical. Whether or not use column labels.
+
+max.ylev	
+An integer indicating the maximum number of levels of grouping variable ('y'). If a column have unique values less than max.ylev it is treated as a categorical variable. Default value is 5.
+
+maxCatLevel	
+An integer indicating the maximum number of unique levels of categorical variable. If a column have unique values more than maxCatLevel, categorical summarization will not be performed.
+
+digits	
+An integer indicating the number of decimal places (round) or significant digits to be used. Default value is 1.
+
+method	
+An integer indicating methods for continuous variables. Possible values in methods are
+
+1
+forces analysis as normal-distributed
+
+2
+forces analysis as continuous non-normal
+
+3
+performs a Shapiro-Wilk test to decide between normal or non-normal
+
+Default value is 1.
+
+catMethod	
+An integer indicating methods for categorical variables. Possible values in methods are
+
+0
+Perform chisq.test first. If warning present, perform fisher test
+
+1
+Perform chisq.test without continuity correction
+
+2
+Perform chisq.test with continuity correction
+
+3
+perform fisher.test
+
+4
+perform prop.trend test
+
+Default value is 2.
+
+show.all	
+A logical value indicating whether or not all statistical values have to be shown in table. Default value is FALSE.
+
+exact	
+A logical value indicating whether or not permit call with approximate parameter. If true, only exact column name permitted.Default value is FALSE.
+
+show.total	
+A logical value indicating whether or not show total group value. Default value is FALSE.
+
+missing	
+A logical value indicating whether or not perform missing data analysis. Default value is FALSE.
+
+```
+
+## CreateTableOne
+- [tableone 패키지 소개](https://blog.zarathu.com/posts/2022-02-07-tableone/)
+### All data summarize
+```{r}
+library(tableone)
+CreateTableOne(data = result)
+```
+### Group summarize
+
+```{r}
+library(tableone)
+CreateTableOne(data = result, strata = "IPA")
+```
+### Document
+```
+Usage
+CreateTableOne(
+  vars,
+  strata,
+  data,
+  factorVars,
+  includeNA = FALSE,
+  test = TRUE,
+  testApprox = chisq.test,
+  argsApprox = list(correct = TRUE),
+  testExact = fisher.test,
+  argsExact = list(workspace = 2 * 10^5),
+  testNormal = oneway.test,
+  argsNormal = list(var.equal = TRUE),
+  testNonNormal = kruskal.test,
+  argsNonNormal = list(NULL),
+  smd = TRUE,
+  addOverall = FALSE
+)
+Arguments
+vars	
+Variables to be summarized given as a character vector. Factors are handled as categorical variables, whereas numeric variables are handled as continuous variables. If empty, all variables in the data frame specified in the data argument are used.
+
+strata	
+Stratifying (grouping) variable name(s) given as a character vector. If omitted, the overall results are returned.
+
+data	
+A data frame in which these variables exist. All variables (both vars and strata) must be in this data frame.
+
+factorVars	
+Numerically coded variables that should be handled as categorical variables given as a character vector. Do not include factors, unless you need to relevel them by removing empty levels. If omitted, only factors are considered categorical variables. The variables specified here must also be specified in the vars argument.
+
+includeNA	
+If TRUE, NA is handled as a regular factor level rather than missing. NA is shown as the last factor level in the table. Only effective for categorical variables.
+
+test	
+If TRUE, as in the default and there are more than two groups, groupwise comparisons are performed.
+
+testApprox	
+A function used to perform the large sample approximation based tests. The default is chisq.test. This is not recommended when some of the cell have small counts like fewer than 5.
+
+argsApprox	
+A named list of arguments passed to the function specified in testApprox. The default is list(correct = TRUE), which turns on the continuity correction for chisq.test.
+
+testExact	
+A function used to perform the exact tests. The default is fisher.test. If the cells have large numbers, it will fail because of memory limitation. In this situation, the large sample approximation based should suffice.
+
+argsExact	
+A named list of arguments passed to the function specified in testExact. The default is list(workspace = 2*10^5), which specifies the memory space allocated for fisher.test.
+
+testNormal	
+A function used to perform the normal assumption based tests. The default is oneway.test. This is equivalent of the t-test when there are only two groups.
+
+argsNormal	
+A named list of arguments passed to the function specified in testNormal. The default is list(var.equal = TRUE), which makes it the ordinary ANOVA that assumes equal variance across groups.
+
+testNonNormal	
+A function used to perform the nonparametric tests. The default is kruskal.test (Kruskal-Wallis Rank Sum Test). This is equivalent of the wilcox.test (Mann-Whitney U test) when there are only two groups.
+
+argsNonNormal	
+A named list of arguments passed to the function specified in testNonNormal. The default is list(NULL), which is just a placeholder.
+
+smd	
+If TRUE, as in the default and there are more than two groups, standardized mean differences for all pairwise comparisons are calculated.
+
+addOverall	
+(optional, only used if strata are supplied) Adds an overall column to the table. Smd and p-value calculations are performed using only the stratifed clolumns.
+```
+
+# `gtsummary::tbl_summary()`
+- [Official Document](https://www.danieldsjoberg.com/gtsummary/)
+- [gtsummary 패키지 소개](https://blog.zarathu.com/posts/2022-02-07-gtsummary/)
+
+### All data summarize
+```{r}
+library(gtsummary)
+result %>%
+    tbl_summary()
+```
+### Group summarize
+```{r}
+result %>%
+    tbl_summary(by = IPA) %>%
+    add_p() %>%
+    add_overall()
+```

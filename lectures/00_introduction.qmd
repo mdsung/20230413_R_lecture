@@ -1,0 +1,43 @@
+---
+title: "Data Science in Healthcare Field with R"
+subtitle: 00 Introduction
+author: "세브란스병원 호흡기내과 성민동"
+date: 2023-04-13
+# format: revealjs
+---
+
+# Workshop 
+- In depth review (2023.4)
+- 2023.04.13 화 18:00
+- 제2세미나실
+
+# Workshop Environment
+- 노트북 사용하셔도 좋습니다. 
+- 만약에 세팅이 힘들다면 [https://rstudio.severance.icu](https://rstudio.severance.icu)
+
+# Disclosure
+- 개인적으로 데이터 분석시 R, Python 둘 다 활용을 합니다. 
+- `base R` 보다는 `tidyverse` package를 많이 선호합니다. 
+- Visualization은 R ggplot2를 많이 이용합니다.
+- 이로 인하여 IDE는 Rstudio보다는 visual studio code를 활용합니다. 
+
+## Reference
+- [R for Data Science](https://r4ds.had.co.nz/)
+- [R을 활용한 데이터 과학](https://bookdown.org/sulgi/r4ds/)
+- 의학논문 작성을 위한 R통계와 그래프(2015, 문건웅)
+- R 통계의 정석(2021, 김종엽)
+- [https://www.tidyverse.org/](https://www.tidyverse.org/)
+- [https://github.com/uopsych/summeR-bootcamp-2020](https://github.com/uopsych/summeR-bootcamp-2020)
+- Cheatsheets
+  - [Rstudio](https://posit.co/wp-content/uploads/2022/10/rstudio-ide-1.pdf)
+  - [readr](https://posit.co/wp-content/uploads/2022/10/data-import.pdf)
+  - [dplyr](https://posit.co/wp-content/uploads/2022/10/data-transformation-1.pdf)
+  - [tidyr](https://posit.co/wp-content/uploads/2022/10/tidyr.pdf)
+  - [ggplot2](https://posit.co/wp-content/uploads/2022/10/data-visualization-1.pdf)
+- [R-graph gallery](https://r-graph-gallery.com/)
+- [colorbrewer2](https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3)
+
+## Install
+- [R for windows](https://cran.r-project.org/bin/windows/base/)
+- [R for mac](https://cran.r-project.org/bin/macosx/)
+- [Rstudio](https://posit.co/products/open-source/rstudio/)

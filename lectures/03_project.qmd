@@ -1,0 +1,99 @@
+---
+title: "Data Science in Healthcare Field with R"
+subtitle: 03 Project
+author: "세브란스병원 호흡기내과 성민동"
+date: 2023-04-13
+# format: revealjs
+---
+
+# Project oriented workflow
+```{r}
+#| label: rstudiobutton
+#| echo: false
+#| message: false
+#| fig.align: 'center'
+#| fig.cap: The Rstudio project button
+#| out.width: '100%'
+knitr::include_graphics(here::here("lectures/images/project_button.png"))
+```
+
+## Data Science Project
+```{r}
+#| label: datascience-explore
+#| echo: false
+#| message: false
+#| figure-width: 200%
+#| figure-height: 200%
+#| fig-align: center
+
+knitr::include_graphics(here::here("lectures/images/data-science-explore.png"))
+```
+
+## Project structure
+- `data/raw`
+- `data/processed`
+- `src/`
+- `figure/`
+- `document/`
+- `others`
+
+```
+e.g.
+├── README.md
+├── conf
+│   ├── config.yaml
+│   └── model
+├── conftest.py
+├── data
+│   ├── categorical_feature.json
+│   ├── demographic_dimension.txt
+│   ├── featureid_mapping.json
+│   ├── icd10_embedding_table.json
+│   └── seq_length.txt
+├── figure
+│   ├── feature_embed_visualize_UMAP.html
+│   ├── hour_embed_visualize_UMAP.html
+│   └── timeseries_embed_visualize_UMAP.html
+├── kakao_code.json
+├── main.py
+├── model.dvc
+├── notebook
+│   └── visualize_embeddings.ipynb
+├── poetry.lock
+├── pyproject.toml
+├── src
+│   ├── alarm.py
+│   ├── database.py
+│   ├── dataloader.py
+│   ├── device.py
+│   ├── earlystopping.py
+│   ├── evaluation.py
+│   ├── gpu.py
+│   ├── logger.py
+│   ├── loss.py
+│   ├── model.py
+│   ├── model_creator.py
+│   ├── monitor.py
+│   ├── optimizer.py
+│   ├── sample.py
+│   ├── test_write.py
+│   ├── train.py
+│   ├── type.py
+│   └── view_testdata.py
+├── tests
+│   ├── test_loss.py
+│   ├── test_model.py
+│   ├── test_sample.py
+│   └── test_type.py
+└── visualize
+    └── visualize_embedding.py
+```
+
+## Project Working directory location
+```{r}
+library(here)
+here::i_am("lectures/03_project.qmd")
+here()
+here("images")
+```
+

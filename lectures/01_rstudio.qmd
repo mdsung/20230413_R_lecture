@@ -1,0 +1,22 @@
+---
+title: "Data Science in Healthcare Field with R"
+subtitle: 01 Rstudio
+author: "세브란스병원 호흡기내과 성민동"
+date: 2023-04-13
+# format: revealjs
+---
+
+## Rstudio 화면구성
+기본적으로 Rstudio는 4개의 창(pane)으로 구성 
+
+1. **Source** - 대부분 code나 notebook을 띄우는 창
+2. **Console** - 실제 명령어가 실행되는 창
+3. **Environment** - 현재 메모리에서 사용하고 있는 변수, 함수 등을 보여주는 창
+4. **Files / Plot / View / Help** - 현재 폴더의 파일, 그림, 결과물, 도움말 등을 확인할 수 있는 창
+
+## Rstudio setting Tip
+1. General > Basic > Workspace / History
+1. Code > Display > Syntax - Use rainbow parentheses
+1. Appearance 
+1. Pane Layout
+1. Package - Primary CRAN repository

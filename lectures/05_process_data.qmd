@@ -1,0 +1,74 @@
+---
+title: "Data Science in Healthcare Field with R"
+subtitle: 05 Process Data
+author: "세브란스병원 호흡기내과 성민동"
+date: 2023-04-13
+format:
+  html:
+    code-overflow: wrap
+    code-copy: hover
+# format: revealjs
+---
+# Process data
+## Load packages
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+library(tidyverse)
+library(here)
+```
+## Wrangling data - make tidy!!
+```{r}
+cytokine <- read_csv(here("data/raw/tutorial_cytokine_trimmed.csv"))
+demographic <- read_csv(here("data/raw/tutorial_demographic.csv"))
+cytokine
+demographic
+```
+- `select()`: select column
+    - `<-`을 써서 assign 하지 않으면 변경되지 않습니다. 
+```{r}
+cytokine %>% select(Sample, TimePoint, Cytokine, Value)
+cytokine %>% select(sample = Sample, timepoint = TimePoint, cytokine = Cytokine, value = Value)
+```
+
+- `filter()`: select row
+```{r}
+s02 <- cytokine %>% filter(Sample == "S02")
+s03 <- cytokine %>% filter(Sample == "S03")
+cytokine %>% filter(Sample == "S02", TimePoint == 1)
+cytokine %>% filter(Cytokine %in% c("IL-6", "IL-10"))
+```
+- `mutate()`: create column
+```{r}
+cytokine <- cytokine %>%
+    mutate(no = readr::parse_number(Sample), .before = "Sample")
+cytokine
+```
+- `bind_rows()` or `bind_cols()` : merge two table without key (`rbind()`, `cbind()`)
+```{r}
+bind_rows(s02, s03)
+bind_rows(list("s2" = s02, "s3" = s03), .id = "Patient")
+```
+- `left_join()`, `right_join()`, `inner_join()`, or `full_join()`: merge two table with key (`merge()`)
+    - 환자 id로 두 테이블을 연결할 때 
+    - 환자 id는 서로 같은 dtype을 가지고 있어야 함
+
+```{r}
+lj_df <- cytokine %>% left_join(demographic, by = c("no" = "No"))
+lj_df %>% tail()
+rj_df <- cytokine %>% right_join(demographic, by = c("no" = "No"))
+rj_df %>% tail()
+```
+- `group_by()`, `summarize()`
+```{r}
+cytokine <- cytokine %>% 
+    select(-Project) %>%
+    group_by(no, Sample, TimePoint, Cytokine) %>%
+    summarize(Value = mean(Value), .groups = 'drop') 
+```
+- `pivot_longer()` or `pivot_wider()`: change the level of the data 
+```{r}
+cytokine %>% 
+    pivot_wider(id_cols = c(no, Sample, TimePoint), names_from = 'Cytokine', values_from = 'Value')
+```

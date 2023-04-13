@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.475">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="세브란스병원 호흡기내과 성민동">
+<meta name="dcterms.date" content="2023-04-13">
+
+<title>Data Science in Healthcare Field with R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="05_process_data_files/libs/clipboard/clipboard.min.js"></script>
+<script src="05_process_data_files/libs/quarto-html/quarto.js"></script>
+<script src="05_process_data_files/libs/quarto-html/popper.min.js"></script>
+<script src="05_process_data_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="05_process_data_files/libs/quarto-html/anchor.min.js"></script>
+<link href="05_process_data_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="05_process_data_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="05_process_data_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="05_process_data_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="05_process_data_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Data Science in Healthcare Field with R</h1>
+<p class="subtitle lead">05 Process Data</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>세브란스병원 호흡기내과 성민동 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 13, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="process-data" class="level1">
+<h1>Process data</h1>
+<section id="load-packages" class="level2">
+<h2 class="anchored" data-anchor-id="load-packages">Load packages</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="wrangling-data---make-tidy" class="level2">
+<h2 class="anchored" data-anchor-id="wrangling-data---make-tidy">Wrangling data - make tidy!!</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cytokine <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data/raw/tutorial_cytokine_trimmed.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 36 Columns: 5
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (3): Sample, Cytokine, Project
+dbl (2): Value, TimePoint
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>demographic <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">"data/raw/tutorial_demographic.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 5 Columns: 3
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): sex
+dbl (2): No, age
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>cytokine</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 36 × 5
+   Sample Cytokine Value Project             TimePoint
+   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;
+ 1 S02    IL-6       187 Longitudinal Sepsis         1
+ 2 S02    IL-10       37 Longitudinal Sepsis         1
+ 3 S02    IL-2        15 Longitudinal Sepsis         1
+ 4 S02    IL-6       190 Longitudinal Sepsis         1
+ 5 S02    IL-10       39 Longitudinal Sepsis         1
+ 6 S02    IL-2        15 Longitudinal Sepsis         1
+ 7 S02    IL-6        16 Longitudinal Sepsis         2
+ 8 S02    IL-10       18 Longitudinal Sepsis         2
+ 9 S02    IL-2        14 Longitudinal Sepsis         2
+10 S02    IL-6        16 Longitudinal Sepsis         2
+# ℹ 26 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>demographic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 3
+     No   age sex  
+  &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;
+1     1    87 M    
+2     5    93 F    
+3     2    88 F    
+4     3    86 M    
+5     4    74 F    </code></pre>
+</div>
+</div>
+<ul>
+<li><code>select()</code>: select column
+<ul>
+<li><code>&lt;-</code>을 써서 assign 하지 않으면 변경되지 않습니다.</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cytokine <span class="sc">%&gt;%</span> <span class="fu">select</span>(Sample, TimePoint, Cytokine, Value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 36 × 4
+   Sample TimePoint Cytokine Value
+   &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
+ 1 S02            1 IL-6       187
+ 2 S02            1 IL-10       37
+ 3 S02            1 IL-2        15
+ 4 S02            1 IL-6       190
+ 5 S02            1 IL-10       39
+ 6 S02            1 IL-2        15
+ 7 S02            2 IL-6        16
+ 8 S02            2 IL-10       18
+ 9 S02            2 IL-2        14
+10 S02            2 IL-6        16
+# ℹ 26 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>cytokine <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="at">sample =</span> Sample, <span class="at">timepoint =</span> TimePoint, <span class="at">cytokine =</span> Cytokine, <span class="at">value =</span> Value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 36 × 4
+   sample timepoint cytokine value
+   &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;
+ 1 S02            1 IL-6       187
+ 2 S02            1 IL-10       37
+ 3 S02            1 IL-2        15
+ 4 S02            1 IL-6       190
+ 5 S02            1 IL-10       39
+ 6 S02            1 IL-2        15
+ 7 S02            2 IL-6        16
+ 8 S02            2 IL-10       18
+ 9 S02            2 IL-2        14
+10 S02            2 IL-6        16
+# ℹ 26 more rows</code></pre>
+</div>
+</div>
+<ul>
+<li><code>filter()</code>: select row</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>s02 <span class="ot">&lt;-</span> cytokine <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Sample <span class="sc">==</span> <span class="st">"S02"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>s03 <span class="ot">&lt;-</span> cytokine <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Sample <span class="sc">==</span> <span class="st">"S03"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>cytokine <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Sample <span class="sc">==</span> <span class="st">"S02"</span>, TimePoint <span class="sc">==</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 5
+  Sample Cytokine Value Project             TimePoint
+  &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;
+1 S02    IL-6       187 Longitudinal Sepsis         1
+2 S02    IL-10       37 Longitudinal Sepsis         1
+3 S02    IL-2        15 Longitudinal Sepsis         1
+4 S02    IL-6       190 Longitudinal Sepsis         1
+5 S02    IL-10       39 Longitudinal Sepsis         1
+6 S02    IL-2        15 Longitudinal Sepsis         1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>cytokine <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Cytokine <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"IL-6"</span>, <span class="st">"IL-10"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 24 × 5
+   Sample Cytokine Value Project             TimePoint
+   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;
+ 1 S02    IL-6       187 Longitudinal Sepsis         1
+ 2 S02    IL-10       37 Longitudinal Sepsis         1
+ 3 S02    IL-6       190 Longitudinal Sepsis         1
+ 4 S02    IL-10       39 Longitudinal Sepsis         1
+ 5 S02    IL-6        16 Longitudinal Sepsis         2
+ 6 S02    IL-10       18 Longitudinal Sepsis         2
+ 7 S02    IL-6        16 Longitudinal Sepsis         2
+ 8 S02    IL-10       18 Longitudinal Sepsis         2
+ 9 S02    IL-6        33 Longitudinal Sepsis         3
+10 S02    IL-10       19 Longitudinal Sepsis         3
+# ℹ 14 more rows</code></pre>
+</div>
+</div>
+<ul>
+<li><code>mutate()</code>: create column</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>cytokine <span class="ot">&lt;-</span> cytokine <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">no =</span> readr<span class="sc">::</span><span class="fu">parse_number</span>(Sample), <span class="at">.before =</span> <span class="st">"Sample"</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>cytokine</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 36 × 6
+      no Sample Cytokine Value Project             TimePoint
+   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;
+ 1     2 S02    IL-6       187 Longitudinal Sepsis         1
+ 2     2 S02    IL-10       37 Longitudinal Sepsis         1
+ 3     2 S02    IL-2        15 Longitudinal Sepsis         1
+ 4     2 S02    IL-6       190 Longitudinal Sepsis         1
+ 5     2 S02    IL-10       39 Longitudinal Sepsis         1
+ 6     2 S02    IL-2        15 Longitudinal Sepsis         1
+ 7     2 S02    IL-6        16 Longitudinal Sepsis         2
+ 8     2 S02    IL-10       18 Longitudinal Sepsis         2
+ 9     2 S02    IL-2        14 Longitudinal Sepsis         2
+10     2 S02    IL-6        16 Longitudinal Sepsis         2
+# ℹ 26 more rows</code></pre>
+</div>
+</div>
+<ul>
+<li><code>bind_rows()</code> or <code>bind_cols()</code> : merge two table without key (<code>rbind()</code>, <code>cbind()</code>)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(s02, s03)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 36 × 5
+   Sample Cytokine Value Project             TimePoint
+   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;
+ 1 S02    IL-6       187 Longitudinal Sepsis         1
+ 2 S02    IL-10       37 Longitudinal Sepsis         1
+ 3 S02    IL-2        15 Longitudinal Sepsis         1
+ 4 S02    IL-6       190 Longitudinal Sepsis         1
+ 5 S02    IL-10       39 Longitudinal Sepsis         1
+ 6 S02    IL-2        15 Longitudinal Sepsis         1
+ 7 S02    IL-6        16 Longitudinal Sepsis         2
+ 8 S02    IL-10       18 Longitudinal Sepsis         2
+ 9 S02    IL-2        14 Longitudinal Sepsis         2
+10 S02    IL-6        16 Longitudinal Sepsis         2
+# ℹ 26 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(<span class="fu">list</span>(<span class="st">"s2"</span> <span class="ot">=</span> s02, <span class="st">"s3"</span> <span class="ot">=</span> s03), <span class="at">.id =</span> <span class="st">"Patient"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 36 × 6
+   Patient Sample Cytokine Value Project             TimePoint
+   &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;
+ 1 s2      S02    IL-6       187 Longitudinal Sepsis         1
+ 2 s2      S02    IL-10       37 Longitudinal Sepsis         1
+ 3 s2      S02    IL-2        15 Longitudinal Sepsis         1
+ 4 s2      S02    IL-6       190 Longitudinal Sepsis         1
+ 5 s2      S02    IL-10       39 Longitudinal Sepsis         1
+ 6 s2      S02    IL-2        15 Longitudinal Sepsis         1
+ 7 s2      S02    IL-6        16 Longitudinal Sepsis         2
+ 8 s2      S02    IL-10       18 Longitudinal Sepsis         2
+ 9 s2      S02    IL-2        14 Longitudinal Sepsis         2
+10 s2      S02    IL-6        16 Longitudinal Sepsis         2
+# ℹ 26 more rows</code></pre>
+</div>
+</div>
+<ul>
+<li><code>left_join()</code>, <code>right_join()</code>, <code>inner_join()</code>, or <code>full_join()</code>: merge two table with key (<code>merge()</code>)
+<ul>
+<li>환자 id로 두 테이블을 연결할 때</li>
+<li>환자 id는 서로 같은 dtype을 가지고 있어야 함</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>lj_df <span class="ot">&lt;-</span> cytokine <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(demographic, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"no"</span> <span class="ot">=</span> <span class="st">"No"</span>))</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>lj_df <span class="sc">%&gt;%</span> <span class="fu">tail</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+     no Sample Cytokine Value Project             TimePoint   age sex  
+  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;
+1     3 S03    IL-6        61 Longitudinal Sepsis         3    86 M    
+2     3 S03    IL-10       30 Longitudinal Sepsis         3    86 M    
+3     3 S03    IL-2        14 Longitudinal Sepsis         3    86 M    
+4     3 S03    IL-6        62 Longitudinal Sepsis         3    86 M    
+5     3 S03    IL-10       30 Longitudinal Sepsis         3    86 M    
+6     3 S03    IL-2        14 Longitudinal Sepsis         3    86 M    </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>rj_df <span class="ot">&lt;-</span> cytokine <span class="sc">%&gt;%</span> <span class="fu">right_join</span>(demographic, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"no"</span> <span class="ot">=</span> <span class="st">"No"</span>))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>rj_df <span class="sc">%&gt;%</span> <span class="fu">tail</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+     no Sample Cytokine Value Project             TimePoint   age sex  
+  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;
+1     3 S03    IL-6        62 Longitudinal Sepsis         3    86 M    
+2     3 S03    IL-10       30 Longitudinal Sepsis         3    86 M    
+3     3 S03    IL-2        14 Longitudinal Sepsis         3    86 M    
+4     1 &lt;NA&gt;   &lt;NA&gt;        NA &lt;NA&gt;                       NA    87 M    
+5     5 &lt;NA&gt;   &lt;NA&gt;        NA &lt;NA&gt;                       NA    93 F    
+6     4 &lt;NA&gt;   &lt;NA&gt;        NA &lt;NA&gt;                       NA    74 F    </code></pre>
+</div>
+</div>
+<ul>
+<li><code>group_by()</code>, <code>summarize()</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>cytokine <span class="ot">&lt;-</span> cytokine <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>Project) <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(no, Sample, TimePoint, Cytokine) <span class="sc">%&gt;%</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">Value =</span> <span class="fu">mean</span>(Value), <span class="at">.groups =</span> <span class="st">'drop'</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><code>pivot_longer()</code> or <code>pivot_wider()</code>: change the level of the data</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>cytokine <span class="sc">%&gt;%</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> <span class="fu">c</span>(no, Sample, TimePoint), <span class="at">names_from =</span> <span class="st">'Cytokine'</span>, <span class="at">values_from =</span> <span class="st">'Value'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 6
+     no Sample TimePoint `IL-10` `IL-2` `IL-6`
+  &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1     2 S02            1    38     15    188. 
+2     2 S02            2    18     14     16  
+3     2 S02            3    19.5   16.5   33.5
+4     3 S03            1    29.5   23    352. 
+5     3 S03            2    57     15.5   61.2
+6     3 S03            3    30     14     61.5</code></pre>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
