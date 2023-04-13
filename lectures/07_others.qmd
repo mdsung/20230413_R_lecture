@@ -6,5 +6,65 @@ date: 2023-04-13
 # format: revealjs
 ---
 # Statistics
+- [rstatix](https://github.com/kassambara/rstatix)
+- [broom::tidy()](https://cran.r-project.org/web/packages/broom/vignettes/broom.html)
+```{r}
+#| label: setup
+#| message: false
+#| error: false
+library(tidyverse)
+library(rstatix)
+library(broom)
+library(here)
+data <- read_csv(here("data/raw/tutorial_ipa.csv"))
+result <- data %>%
+                        select(-PatientID) %>%
+                        mutate(across(c(-IPA, -serum_AGT, -BALF_AGT, -BDG), factor)) 
+```
+### e.g. t_test()
+```{r}
+result %>% t_test(serum_AGT ~ IPA)
+result %>% t_test(BALF_AGT ~ IPA)
+result %>% t_test(BDG ~ IPA)
+```
+
+### post-hoc analysis
+```{r eval = F}
+# Compare supp levels after grouping the data by "dose"
+# ::::::::::::::::::::::::::::::::::::::::
+df %>%
+        group_by(dose) %>%
+        t_test(data = ., len ~ supp) %>%
+        adjust_pvalue(method = "bonferroni") %>%
+        add_significance("p.adj")
+#> # A tibble: 3 × 11
+#>    dose .y.   group1 group2    n1    n2 statistic    df       p   p.adj p.adj.…¹
+#>   <dbl> <chr> <chr>  <chr>  <int> <int>     <dbl> <dbl>   <dbl>   <dbl> <chr>
+#> 1   0.5 len   OJ     VC        10    10    3.17    15.0 0.00636 0.0191  *
+#> 2   1   len   OJ     VC        10    10    4.03    15.4 0.00104 0.00312 **
+#> 3   2   len   OJ     VC        10    10   -0.0461  14.0 0.964   1       ns
+#> # … with abbreviated variable name ¹​p.adj.signif
+```
+### tidy - statistic result
+```{r}
+model <- glm(formula = IPA ~ serum_AGT + BALF_AGT, data = result)
+model
+summary(model)
+tidy(model)
+```
 
 # Visualization
+- [ggplot2](https://ggplot2.tidyverse.org/)
+- [cowplot](https://wilkelab.org/cowplot/articles/plot_grid.html)
+```{r}
+#| echo: False
+knitr::include_graphics("images/ggplot_layer.png")
+```
+## The “grammar” contains more definitions for graphics elements
+- coordinate system: e.g. Cartesian, polar, map projections
+- geoms: describe type of geometric objects that represent data (points, lines, polygons
+- aesthetics: describe visual characteristics that represent data (position, size, color, shape, transparency, fill.)
+- scales: for each aesthetic: log scales, color scales, size scales, shape scales.
+- stats : describe statistical transformations that typically summarize data: counts, means, medians, regression lines.
+- facets: describe how data is split into subsets and displayed as multiple, separate small graphs.
+- Theme: controls appearance of non-data elements
